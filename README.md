@@ -1,6 +1,6 @@
 # APP TAREFA - TESTE TÉCNICO ESIG
 
-## Link do projeto: https://github.com/mateus-s-silva/crud-spring/
+## Link do projeto: https://github.com/mateus-s-silva/atividade_tecnica
 
 ## O que foi feito?
 
