@@ -1,0 +1,138 @@
+<div class="fundo-cadastro" *ngIf="menuCadastroCriar || menuCadastroEditar">
+  <div class="cadastro-container">
+    <div class="cadastro">
+      <h2>{{tituloModal ? "Cadastrar tarefa" : "Editar tarefa"}}</h2>
+      <form>
+        <div>
+          <label>Título</label>
+          <input required type="text" name="titulo" [(ngModel)]="taskTemplate.titulo">
+        </div>
+        <div>
+          <label>Descricao</label>
+          <input type="text" name="descricao" [(ngModel)]="taskTemplate.descricao">
+        </div>
+        <div>
+          <label>Responsavel</label>
+          <input required name="responsavel" [(ngModel)]="taskTemplate.responsavel">
+        </div>
+        <div>
+          <label>Prioridade</label>
+          <select name="prioridade" [(ngModel)]="taskTemplate.prioridade">
+            <option value="ALTA">ALTA</option>
+            <option value="MEDIA">MEDIA</option>
+            <option value="BAIXA">BAIXA</option>
+          </select>
+        </div>
+        <div>
+          <label>Deadline</label>
+          <input required name="deadline" type="date" [(ngModel)]="taskTemplate.deadline">
+        </div>
+        <div class="button-cadastro">
+          <button *ngIf="menuCadastroCriar" (click)="cadastrarTask()">Criar tarefa</button>
+          <button *ngIf="menuCadastroCriar" (click)="cancelarCriar()">Cancelar</button>
+          <button *ngIf="menuCadastroEditar" (click)="salvarEdicao()">Editar</button>
+          <button *ngIf="menuCadastroEditar" (click)="cancelarSalvar()">Cancelar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="background-lista">
+  <div class="titulo">
+    <h2>Listagem de Tarefas</h2>
+  </div>
+  <div class="lista-wrapper">
+    <div class="lista-container">
+
+      <div class="filtro-container">
+        <div class="filtro-numero">
+          <label for="numero">Número:</label>
+          <input type="text" id="numero" [(ngModel)]="filtroNumero" pattern="[0-9]*">
+        </div>
+
+        <div class="filtro-titulo">
+          <label for="titulo">Título/Descrição:</label>
+          <input type="text" id="titulo" [(ngModel)]="filtroTitulo">
+        </div>
+
+
+        <div class="filtro-prioridade">
+          <label for="prioridade">Prioridade:</label>
+          <select id="prioridade" [(ngModel)]="filtroPrioridade">
+            <option value="">Todas</option>
+            <option value="ALTA">Alta</option>
+            <option value="MEDIA">Média</option>
+            <option value="BAIXA">Baixa</option>
+          </select>
+        </div>
+
+        <div class="filtro-situacao">
+          <label for="situacao">Situação:</label>
+          <select id="situacao" [(ngModel)]="filtroSituacao">
+            <option [ngValue]="null">Todas</option>
+            <option [ngValue]="true">Concluída</option>
+            <option [ngValue]="false">Em andamento</option>
+          </select>
+        </div>
+
+        <div class="filtro-responsavel">
+          <label for="responsavel">Responsável:</label>
+          <select id="responsavel" [(ngModel)]="filtroResponsavel">
+            <option value="">Todos</option>
+            <option *ngFor="let task of tasks" [ngValue]="task.responsavel">{{ task.responsavel }}</option>
+          </select>
+        </div>
+      </div>
+
+
+
+      <div class="lista">
+        <table class="tarefas">
+          <thead>
+            <tr>
+              <th>Número</th>
+              <th>Título</th>
+              <th>Responsável</th>
+              <th>Situação</th>
+              <th>Prioridade</th>
+              <th>Deadline</th>
+              <th>Descricão</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let task of tasks">
+              <tr *ngIf="filtro(task)">
+
+                <td>{{tasks.indexOf(task) + 1}}</td>
+                <td>{{task.titulo}}</td>
+                <td>{{task.responsavel}}</td>
+                <td>{{task.situacao ? 'Concluída' : 'Em andamento'}}</td>
+                <td>{{task.prioridade}}</td>
+                <td>{{task.deadline | date: 'dd/MM/yy'}}</td>
+                <td class="descricao">
+                  <div class="descricao-container">
+                    {{task.descricao}}
+                  </div>
+                </td>
+                <td class="acoes-button">
+                  <button (click)="deletarTask(task.id!)">Excluir</button>
+                  <button (click)="concluirTask(task.id!)">Concluir</button>
+                  <button (click)="editarTask(task.id!)">Editar</button>
+                </td>
+
+              </tr>
+            </ng-container>
+
+          </tbody>
+        </table>
+        <button (click)="menuCadastroCriar = true">Cadastrar tarefa</button>
+      </div>
+    </div>
+  </div>
+</div>
